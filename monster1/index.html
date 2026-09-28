@@ -2,23 +2,44 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>家事モンスター</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
-      background: #000;
       width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+      height: 100svh;
     }
 
     img {
       display: block;
-      width: 100%;
+      width: auto;
       height: auto;
+      max-width: 100vw;
+      max-height: 100vh;
+      max-height: 100svh;
+      object-fit: contain;
     }
   </style>
 </head>
+
 <body>
   <img src="image.png" alt="家事モンスター">
 </body>
