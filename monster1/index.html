@@ -26,7 +26,7 @@
       background: #000;
     }
 
-    /* 余った部分に表示するぼかし背景 */
+    /* 余った部分は同じ画像をぼかして表示 */
     .screen::before {
       content: "";
       position: absolute;
@@ -36,7 +36,7 @@
       transform: scale(1.08);
     }
 
-    /* メイン画像 */
+    /* メイン画像：101％ */
     .screen img {
       position: relative;
       z-index: 1;
@@ -45,9 +45,9 @@
       width: auto;
       height: auto;
 
-      max-width: 102vw;
-      max-height: 102vh;
-      max-height: 102svh;
+      max-width: 101vw;
+      max-height: 101vh;
+      max-height: 101svh;
 
       object-fit: contain;
     }
