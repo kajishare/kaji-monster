@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
   <title>家事モンスター</title>
 
   <style>
@@ -25,23 +26,29 @@
       background: #000;
     }
 
+    /* 余った部分に表示するぼかし背景 */
     .screen::before {
       content: "";
       position: absolute;
       inset: -20px;
       background: url("image.png") center center / cover no-repeat;
-      filter: blur(24px) brightness(0.7);
+      filter: blur(24px) brightness(0.72);
       transform: scale(1.08);
     }
 
+    /* メイン画像 */
     .screen img {
       position: relative;
       z-index: 1;
       display: block;
+
       width: auto;
       height: auto;
-      max-width: 100%;
-      max-height: 100%;
+
+      max-width: 102vw;
+      max-height: 102vh;
+      max-height: 102svh;
+
       object-fit: contain;
     }
   </style>
