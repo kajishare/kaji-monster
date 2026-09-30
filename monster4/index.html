@@ -11,6 +11,10 @@
   <title>家事モンスター</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     html,
     body {
       margin: 0;
@@ -23,7 +27,11 @@
 
     .screen {
       position: fixed;
-      inset: 0;
+      left: 0;
+      top: 0;
+
+      width: var(--viewport-width, 100vw);
+      height: var(--viewport-height, 100vh);
 
       display: flex;
       justify-content: center;
@@ -37,18 +45,18 @@
     .screen::before {
       content: "";
       position: absolute;
-      inset: -20px;
+      inset: -30px;
 
       background:
         url("image.png")
         center center / cover
         no-repeat;
 
-      filter: blur(24px) brightness(0.72);
+      filter: blur(26px) brightness(0.72);
       transform: scale(1.08);
     }
 
-    /* 基本：スマホは102％で表示 */
+    /* メイン画像 */
     .screen img {
       position: relative;
       z-index: 1;
@@ -58,20 +66,14 @@
       width: auto;
       height: auto;
 
-      max-width: 102vw;
-      max-height: 102vh;
-      max-height: 102svh;
+      max-width: 100%;
+      max-height: 100%;
 
       object-fit: contain;
-    }
+      object-position: center center;
 
-    /* iPad・タブレット・横幅の広い端末は100％ */
-    @media (min-width: 700px) {
-      .screen img {
-        max-width: 100vw;
-        max-height: 100vh;
-        max-height: 100svh;
-      }
+      transform: scale(var(--image-scale, 1));
+      transform-origin: center center;
     }
   </style>
 </head>
@@ -81,6 +83,119 @@
   <div class="screen">
     <img src="image.png" alt="家事モンスター">
   </div>
+
+  <script>
+    function adjustDisplay() {
+
+      /*
+        元画像：1080 × 1920
+        縦横比 = 0.5625
+      */
+      const imageAspect = 1080 / 1920;
+
+      /*
+        Safari・Chrome・アプリ内ブラウザなどの
+        実際に見えている表示領域を取得
+      */
+      const viewport = window.visualViewport;
+
+      const width = viewport
+        ? viewport.width
+        : window.innerWidth;
+
+      const height = viewport
+        ? viewport.height
+        : window.innerHeight;
+
+      /*
+        実際の表示領域をCSSへ渡す
+      */
+      document.documentElement.style.setProperty(
+        "--viewport-width",
+        width + "px"
+      );
+
+      document.documentElement.style.setProperty(
+        "--viewport-height",
+        height + "px"
+      );
+
+      /*
+        現在の画面の縦横比
+      */
+      const screenAspect = width / height;
+
+      /*
+        元画像との縦横比の違いを計算
+      */
+      const difference =
+        Math.abs(screenAspect - imageAspect) / imageAspect;
+
+      /*
+        元画像と画面比率が近い
+        → 103％
+
+        画面比率との差が大きい
+        → 100％
+
+        その中間
+        → 100〜103％で自動調整
+      */
+      let scale;
+
+      if (difference <= 0.05) {
+
+        scale = 1.03;
+
+      } else if (difference >= 0.30) {
+
+        scale = 1.00;
+
+      } else {
+
+        const ratio =
+          (difference - 0.05) / (0.30 - 0.05);
+
+        scale =
+          1.03 - (0.03 * ratio);
+      }
+
+      document.documentElement.style.setProperty(
+        "--image-scale",
+        scale
+      );
+    }
+
+    /*
+      ページを開いた時に実行
+    */
+    adjustDisplay();
+
+    /*
+      画面サイズが変わった場合に再計算
+    */
+    window.addEventListener(
+      "resize",
+      adjustDisplay
+    );
+
+    /*
+      Safari・Chrome・アプリ内ブラウザなどで
+      表示領域が変化した場合にも再計算
+    */
+    if (window.visualViewport) {
+
+      window.visualViewport.addEventListener(
+        "resize",
+        adjustDisplay
+      );
+
+      window.visualViewport.addEventListener(
+        "scroll",
+        adjustDisplay
+      );
+    }
+  </script>
 
 </body>
 </html>
