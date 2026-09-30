@@ -93,6 +93,10 @@
       */
       const imageAspect = 1080 / 1920;
 
+      /*
+        Safari・Chrome・アプリ内ブラウザなどの
+        実際に見えている表示領域を取得
+      */
       const viewport = window.visualViewport;
 
       const width = viewport
@@ -104,7 +108,7 @@
         : window.innerHeight;
 
       /*
-        実際に表示できる画面サイズをCSSへ渡す
+        実際の表示領域をCSSへ渡す
       */
       document.documentElement.style.setProperty(
         "--viewport-width",
@@ -129,20 +133,19 @@
 
       /*
         元画像と画面比率が近い
-        → 102％
+        → 103％
 
-        差が大きい
+        画面比率との差が大きい
         → 100％
 
         その中間
-        → 自動的に100〜102％
+        → 100〜103％で自動調整
       */
-
       let scale;
 
       if (difference <= 0.05) {
 
-        scale = 1.02;
+        scale = 1.03;
 
       } else if (difference >= 0.30) {
 
@@ -154,7 +157,7 @@
           (difference - 0.05) / (0.30 - 0.05);
 
         scale =
-          1.02 - (0.02 * ratio);
+          1.03 - (0.03 * ratio);
       }
 
       document.documentElement.style.setProperty(
@@ -164,12 +167,12 @@
     }
 
     /*
-      最初に実行
+      ページを開いた時に実行
     */
     adjustDisplay();
 
     /*
-      画面サイズが変わった時にも再計算
+      画面サイズが変わった場合に再計算
     */
     window.addEventListener(
       "resize",
@@ -177,8 +180,8 @@
     );
 
     /*
-      Safari・Chrome・アプリ内ブラウザなどの
-      実際の表示領域が変化した場合にも対応
+      Safari・Chrome・アプリ内ブラウザなどで
+      表示領域が変化した場合にも再計算
     */
     if (window.visualViewport) {
 
